@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Farmacias</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <h1>Buscador de Farmacias</h1>
+
+    <div class="container">
+        <form method="post">
+            <button type="submit">Buscar Farmacias</button>
+        </form>
+    </div>
+
+    {% if farmacias %}
+        <ul>
+            {% for farmacia in farmacias %}
+                {% if farmacia.name and farmacia.formatted_address and farmacia.formatted_phone_number and farmacia.website and farmacia.rating %}
+                    <li>
+                        <div class="card-header">🟩 {{ farmacia.name }}</div>
+                        <p class="card-text">Dirección: {{ farmacia.formatted_address.split(',')[0]|trim }}</p>
+                        <p class="card-text">Teléfono: {{ farmacia.formatted_phone_number }}</p>
+                        {% if farmacia.website %}
+                            <p class="card-text">Sitio Web: <a href="{{ farmacia.website }}" target="_blank">{{ farmacia.website }}</a></p>
+                        {% endif %}
+                        {% if farmacia.formatted_address %}
+                        <a href="https://www.google.com/maps?q={{ farmacia.formatted_address|urlencode }}" target="_blank" class="card-map">
+                          <img src="../static/iconomapa.png" alt="Ver en Google Maps">
+                      </a>                    
+                        {% endif %}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
